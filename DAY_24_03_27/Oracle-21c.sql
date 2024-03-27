@@ -45,3 +45,8 @@ SELECT first_name, (SELECT department_name
     WHERE d.department_id=e.department_id) department_name
 FROM employees e
 ORDER BY first_name;
+
+SELECT first_name, department_name
+FROM employees e
+JOIN departments d ON (e.department_id=d.department_id)
+ORDER BY first_name;
