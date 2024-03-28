@@ -260,5 +260,3 @@ WHERE deptno=30;
 -- 9.
 COMMIT;
 -- 커밋을 해주고 다시 값을 수정해보면
-
-SELECT * FROM emp WHERE empno=115;
