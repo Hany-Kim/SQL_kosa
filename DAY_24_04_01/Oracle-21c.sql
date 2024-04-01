@@ -1,12 +1,12 @@
--- ºä
+-- ë·°
 SELECT * FROM user_sys_privs;
 
 SELECT * FROM user_role_privs;
--- 11g±îÁö connect role, resource role·Î ³ª´µ¾î ÀÖ¾úÁö¸¸
--- ÀÌÈÄ¿£ ´ÙÁÜ
+-- 11gê¹Œì§€ connect role, resource roleë¡œ ë‚˜ë‰˜ì–´ ìˆì—ˆì§€ë§Œ
+-- ì´í›„ì—” ë‹¤ì¤Œ
 
 SELECT * FROM user_views;
--- text colÀ» È®ÀÎÇÏ¸é Äõ¸®¹®À» È®ÀÎÇÒ ¼ö ÀÖ´Ù.
+-- text colì„ í™•ì¸í•˜ë©´ ì¿¼ë¦¬ë¬¸ì„ í™•ì¸í•  ìˆ˜ ìˆë‹¤.
 --"SELECT
 --  e.employee_id,
 --  e.job_id,
@@ -37,9 +37,9 @@ SELECT * FROM user_views;
 --  AND c.region_id = r.region_id
 --  AND j.job_id = e.job_id
 --WITH READ ONLY";
--- ¸Å¿ì º¹ÀâÇÑ Äõ¸®¹®ÀÌ´Ù.
+-- ë§¤ìš° ë³µì¡í•œ ì¿¼ë¦¬ë¬¸ì´ë‹¤.
 SELECT * FROM emp_details_view;
--- ¾Õ¼­ ¸Å¿ì º¹ÀâÇÑ Äõ¸®¸¦ °£´ÜÈ÷ »ç¿ëÇÒ ¼ö ÀÖ´Ù.
+-- ì•ì„œ ë§¤ìš° ë³µì¡í•œ ì¿¼ë¦¬ë¥¼ ê°„ë‹¨íˆ ì‚¬ìš©í•  ìˆ˜ ìˆë‹¤.
 
 CREATE VIEW emp_view_dept60
     AS SELECT
@@ -48,7 +48,7 @@ CREATE VIEW emp_view_dept60
             employees
         WHERE
             department_id=60;
---View EMP_VIEW_DEPT60ÀÌ(°¡) »ı¼ºµÇ¾ú½À´Ï´Ù.
+--View EMP_VIEW_DEPT60ì´(ê°€) ìƒì„±ë˜ì—ˆìŠµë‹ˆë‹¤.
 DESC emp_view_dept60;
 SELECT * FROM emp_view_dept60;
 
@@ -59,7 +59,7 @@ CREATE VIEW emp_dept60_salary
             salary AS monthly_salary
         FROM employees
         WHERE department_id=60;
--- View EMP_DEPT60_SALARYÀÌ(°¡) »ı¼ºµÇ¾ú½À´Ï´Ù.        
+-- View EMP_DEPT60_SALARYì´(ê°€) ìƒì„±ë˜ì—ˆìŠµë‹ˆë‹¤.        
 DESC emp_dept60_salary;
 SELECT * FROM emp_dept60_salary;
 
@@ -133,7 +133,7 @@ FROM (SELECT first_name, salary,
         ORDER BY salary DESC)
 WHERE row_number BETWEEN 1 AND 10;        
 
--- 13Àå ½ÃÄö½º, ÀÎµ¦½º, µ¿ÀÇ¾î
+-- 13ì¥ ì‹œí€€ìŠ¤, ì¸ë±ìŠ¤, ë™ì˜ì–´
 SELECT * FROM emps WHERE first_name='David';
 
 CREATE INDEX emps_first_name_idx
@@ -172,4 +172,13 @@ FOR emp_dept60;
 
 DROP SYNONYM emp60;
 
--- 13Àå ¿¬½À¹®Á¦
+-- 13ì¥ ì—°ìŠµë¬¸ì œ
+-- 1.
+CREATE SEQUENCE BBS_SEQ
+    INCREMENT BY 1
+    START WITH 1
+    CACHE 20;
+    
+-- 2.
+CREATE INDEX idx_emp_realsal
+ON  emp(COALESCE(salary + salary * commission_pct, salary));
