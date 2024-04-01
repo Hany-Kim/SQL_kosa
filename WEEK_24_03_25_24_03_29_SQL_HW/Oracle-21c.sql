@@ -308,6 +308,12 @@ FROM employees pe
     ON pe.employee_id=ce.manager_id
 WHERE d.department_name='IT'
     AND pe.department_id=ce.department_id;    
+-- ´ä
+SELECT e.first_name
+FROM departments d
+JOIN employees e
+ON d.manager_id = e.employee_id
+WHERE d.department_name='IT';
 
 -- 48.
 SELECT pe.first_name
