@@ -83,3 +83,93 @@ AS SELECT
     JOIN jobs j ON e.job_id = j.job_id;
     
 DROP VIEW emp_dept60_salary;
+
+CREATE TABLE emps AS SELECT * FROM employees;
+
+CREATE OR REPLACE VIEW emp_dept60
+AS SELECT DISTINCT * FROM emps WHERE department_id=60;
+
+CREATE OR REPLACE VIEW emp_dept60
+AS SELECT
+    employee_id,
+    first_name || ', ' || last_name AS name,
+    salary*12 AS annual_salary
+FROM emps WHERE department_id=60;    
+
+CREATE OR REPLACE VIEW emp_dept60
+AS SELECT
+    employee_id,
+    first_name,
+    last_name,
+    email,
+    salary
+FROM emps WHERE department_id=60;  
+
+CREATE OR REPLACE VIEW emp_dept60
+AS SELECT
+    employee_id, first_name, hire_date, salary, department_id
+FROM emps
+WHERE department_id=60
+WITH CHECK OPTION CONSTRAINT emp_dept60_ck;
+
+UPDATE emp_dept60
+SET department_id=10
+WHERE employee_id=105;
+
+CREATE OR REPLACE VIEW emp_dept60
+AS SELECT
+    employee_id, first_name, hire_date, salary, department_id
+FROM emps
+WHERE department_id=60
+WITH READ ONLY;
+
+DELETE FROM emp_dept60
+WHERE employee_id=105;
+
+SELECT row_number, first_name, salary
+FROM (SELECT first_name, salary,
+        row_number() OVER (ORDER BY salary DESC) AS row_number
+        FROM employees
+        ORDER BY salary DESC)
+WHERE row_number BETWEEN 1 AND 10;        
+
+-- 13장 시퀀스, 인덱스, 동의어
+SELECT * FROM emps WHERE first_name='David';
+
+CREATE INDEX emps_first_name_idx
+ON emps(first_name);
+
+DROP INDEX emps_first_name_idx;
+
+SELECT ic.index_name, ic.column_name,
+    ix.uniqueness
+FROM USER_INDEXES ix, USER_IND_COLUMNS ic
+WHERE ic.index_name = ix.index_name
+AND ic.table_name = 'EMPLOYEES';
+
+CREATE BITMAP INDEX emps_comm_idx ON emps(commission_pct);
+
+CREATE UNIQUE INDEX emps_email_idx ON emps(email);
+
+SELECT * FROM emps WHERE email='DLEE';
+
+CREATE INDEX emps_annsal_idx
+ON emps(COALESCE(salary+salary*commission_pct, salary));
+
+SELECT *
+FROM emps
+WHERE COALESCE(salary+salary*commission_pct, salary) > 10000;
+
+CREATE UNIQUE INDEX emps_name_indx
+ON emps(first_name, last_name);
+
+SELECT *
+FROM emps
+WHERE first_name='Peter' AND last_name='Hall';
+
+CREATE SYNONYM emp60
+FOR emp_dept60;
+
+DROP SYNONYM emp60;
+
+-- 13장 연습문제
